@@ -42,8 +42,8 @@ async function run() {
         });
 
         // get :: show all team members
-        app.get("/api/v1/show-all-team-members",async(req,res)=>{
-            const result=await teamMembersCollection.find().toArray();
+        app.get("/api/v1/show-all-team-members", async (req, res) => {
+            const result = await teamMembersCollection.find().toArray();
             res.send(result);
         })
 
@@ -55,14 +55,14 @@ async function run() {
         })
 
         // post :: create team member
-        app.post("/api/v1/create-team-member",async(req,res)=>{
-            const teamMember=req.body;
-            const result=await teamMembersCollection.insertOne(teamMember);
+        app.post("/api/v1/create-team-member", async (req, res) => {
+            const teamMember = req.body;
+            const result = await teamMembersCollection.insertOne(teamMember);
             res.send(result);
         });
 
         // patch :: update service
-        app.patch("/api/v1/update-service/:serviceId", async(req, res) => {
+        app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
             const serviceData = req.body;
             const serviceId = req.params.serviceId;
             const query = { _id: new ObjectId(serviceId) };
@@ -87,7 +87,13 @@ async function run() {
             res.send(result);
         })
 
-
+        // delete :: delete team member
+        app.delete("/api/v1/delete-team-member/:teamMemberId", async (req, res) => {
+            const teamMemberId = req.params.teamMemberId;
+            const query = { _id: new ObjectId(teamMemberId) };
+            const result = await teamMembersCollection.deleteOne(query);
+            res.send(result);
+        })
 
 
         // Send a ping to confirm a successful connection
