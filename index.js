@@ -41,12 +41,25 @@ async function run() {
             res.send(result);
         });
 
+        // get :: show all team members
+        app.get("/api/v1/show-all-team-members",async(req,res)=>{
+            const result=await teamMembersCollection.find().toArray();
+            res.send(result);
+        })
+
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
             const service = req.body;
             const result = await servicesCollection.insertOne(service)
-            res.send(result)
+            res.send(result);
         })
+
+        // post :: create team member
+        app.post("/api/v1/create-team-member",async(req,res)=>{
+            const teamMember=req.body;
+            const result=await teamMembersCollection.insertOne(teamMember);
+            res.send(result);
+        });
 
         // patch :: update service
         app.patch("/api/v1/update-service/:serviceId", async(req, res) => {
@@ -63,7 +76,7 @@ async function run() {
                 }
             }
             const result = await servicesCollection.updateOne(query, updateService);
-            res.send(updateService)
+            res.send(updateService);
         })
 
         // delete :: delete service
