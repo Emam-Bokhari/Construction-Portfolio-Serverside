@@ -67,6 +67,13 @@ async function run() {
             res.send(result);
         });
 
+        // post :: create project
+        app.post("/api/v1/create-project", async (req, res) => {
+            const project = req.body;
+            const result = await projectsCollection.insertOne(project);
+            res.send(result);
+        })
+
         // patch :: update service
         app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
             const serviceData = req.body;
