@@ -35,6 +35,8 @@ async function run() {
         const testimonialsCollection = database.collection("testimonials");
         const blogsCollection = database.collection("blogs");
 
+        // ====================get====================
+
         // get :: show all services
         app.get("/api/v1/all-services", async (req, res) => {
             const result = await servicesCollection.find().toArray();
@@ -81,6 +83,8 @@ async function run() {
             res.send(result);
         })
 
+        // ====================post====================
+
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
             const service = req.body;
@@ -115,6 +119,8 @@ async function run() {
             const result = await blogsCollection.insertOne(blog);
             res.send(result);
         })
+
+        // ====================Patch====================
 
         // patch :: update service
         app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
@@ -204,6 +210,8 @@ async function run() {
             const result = await blogsCollection.updateOne(query, updateBlog);
             res.send(result);
         });
+
+        // ====================Delete====================
 
         // delete :: delete service
         app.delete("/api/v1/delete-service/:serviceId", async (req, res) => {
