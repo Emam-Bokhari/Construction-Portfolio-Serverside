@@ -139,6 +139,22 @@ async function run() {
             res.send(result);
         });
 
+        // patch :: update testimonials
+        app.patch("/api/v1/update-testimonials/:testimonialsId", async (req, res) => {
+            const testimonialsId = req.params.testimonialsId;
+            const testimonialsData = req.body;
+            const query = { _id: new ObjectId(testimonialsId) };
+            const updateTestimonials = {
+                $set: {
+                    name: testimonialsData.name,
+                    image: testimonialsData.image,
+                    review: testimonialsData.review
+                }
+            }
+            const result = await testimonialsCollection.updateOne(query, updateTestimonials);
+            res.send(result);
+        })
+
         // delete :: delete service
         app.delete("/api/v1/delete-service/:serviceId", async (req, res) => {
             const serviceId = req.params.serviceId;
