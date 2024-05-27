@@ -159,14 +159,35 @@ async function run() {
             const query = { _id: new ObjectId(testimonialsId) };
             const updateTestimonials = {
                 $set: {
-                    name: testimonialsData.name,
                     image: testimonialsData.image,
+                    name: testimonialsData.name,
                     review: testimonialsData.review
                 }
             }
             const result = await testimonialsCollection.updateOne(query, updateTestimonials);
             res.send(result);
         })
+
+        // patch :: update blog
+        app.patch("/api/v1/update-blog/:blogId", (req, res) => {
+            const blogId = req.params.blogId;
+            const blogData = req.body;
+            const query = { _id: new ObjectId(blogId) };
+            const updateBlog = {
+                $set: {
+                    image: blogData.image,
+                    title: blogData.image,
+                    category: blogData.image,
+                    description: blogData.image,
+                    paraOne: blogData.image,
+                    paraTwo: blogData.image,
+                    author: blogData.image,
+                    publishedDate: blogData.image,
+                }
+            }
+            const result = await blogsCollection.updateOne(updateBlog);
+            res.send(result);
+        });
 
         // delete :: delete service
         app.delete("/api/v1/delete-service/:serviceId", async (req, res) => {
@@ -197,6 +218,14 @@ async function run() {
             const testimonialsId = req.params.testimonialsId;
             const query = { _id: new ObjectId(testimonialsId) };
             const result = await testimonialsCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        // delete :: delete blog
+        app.delete("/api/v1/delete-blog/:blogId", async (req, res) => {
+            const blogId = req.params.blogId;
+            const query = { _id: new ObjectId(blogId) };
+            const result = await blogsCollection.deleteOne(query);
             res.send(result);
         })
 
