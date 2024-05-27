@@ -169,7 +169,7 @@ async function run() {
         })
 
         // patch :: update blog
-        app.patch("/api/v1/update-blog/:blogId", (req, res) => {
+        app.patch("/api/v1/update-blog/:blogId", async(req, res) => {
             const blogId = req.params.blogId;
             const blogData = req.body;
             const query = { _id: new ObjectId(blogId) };
@@ -182,10 +182,10 @@ async function run() {
                     paraOne: blogData.image,
                     paraTwo: blogData.image,
                     author: blogData.image,
-                    publishedDate: blogData.image,
+                    publishedDate: blogData.image
                 }
             }
-            const result = await blogsCollection.updateOne(updateBlog);
+            const result = await blogsCollection.updateOne(query,updateBlog);
             res.send(result);
         });
 
