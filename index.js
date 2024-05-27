@@ -59,6 +59,12 @@ async function run() {
             res.send(result);
         })
 
+        // get :: show all blogs
+        app.get("/api/v1/show-all-blogs", async (req, res) => {
+            const result = await blogsCollection.find().toArray();
+            res.send(result);
+        })
+
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
             const service = req.body;
@@ -183,7 +189,7 @@ async function run() {
         app.delete("/api/v1/delete-testimonials/:testimonialsId", async (req, res) => {
             const testimonialsId = req.params.testimonialsId;
             const query = { _id: new ObjectId(testimonialsId) };
-            const result = await teamMembersCollection.deleteOne(query);
+            const result = await testimonialsCollection.deleteOne(query);
             res.send(result);
         })
 
