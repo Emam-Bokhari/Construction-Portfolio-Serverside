@@ -73,7 +73,13 @@ async function run() {
             res.send(result);
         })
 
-
+        // get :: blog details
+        app.get("/api/v1/blog-details/:blogId", async (req, res) => {
+            const blogId = req.params.blogId;
+            const query = { _id: new ObjectId(blogId) };
+            const result = await blogsCollection.findOne(query);
+            res.send(result);
+        })
 
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
