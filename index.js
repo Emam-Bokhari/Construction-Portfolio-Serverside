@@ -79,6 +79,26 @@ async function run() {
             res.send(updateService);
         })
 
+        // patch :: update team member
+        app.patch("/api/v1/update-team-member/:teamMemberId", async (req, res) => {
+            const teamMemberId = req.params.teamMemberId;
+            const teamMemberData = req.body;
+            const query = { _id: new ObjectId(teamMemberId) };
+            const updateTeamMember = {
+                $set: {
+                    image: teamMemberData.image,
+                    name: teamMemberData.name,
+                    designation: teamMemberData.designation,
+                    facebookSocialLink: teamMemberData.facebookSocialLink,
+                    twitterSocialLink: teamMemberData.twitterSocialLink,
+                    instagramSocialLink: teamMemberData.instagramSocialLink,
+                    linkedinSocialLink: teamMemberData.linkedinSocialLink,
+                }
+            }
+            const result = await teamMembersCollection.updateOne(query, updateTeamMember);
+            res.send(result)
+        })
+
         // delete :: delete service
         app.delete("/api/v1/delete-service/:serviceId", async (req, res) => {
             const serviceId = req.params.serviceId;
