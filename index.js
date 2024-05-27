@@ -41,6 +41,14 @@ async function run() {
             res.send(result);
         });
 
+        // get :: service details
+        app.get("/api/v1/service-details/:serviceId", async (req, res) => {
+            const serviceId = req.params.serviceId;
+            const query = { _id: new ObjectId(serviceId) };
+            const result = await servicesCollection.findOne(query);
+            res.send(result);
+        })
+
         // get :: show all team members
         app.get("/api/v1/show-all-team-members", async (req, res) => {
             const result = await teamMembersCollection.find().toArray();
@@ -64,6 +72,8 @@ async function run() {
             const result = await blogsCollection.find().toArray();
             res.send(result);
         })
+
+
 
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
@@ -169,7 +179,7 @@ async function run() {
         })
 
         // patch :: update blog
-        app.patch("/api/v1/update-blog/:blogId", async(req, res) => {
+        app.patch("/api/v1/update-blog/:blogId", async (req, res) => {
             const blogId = req.params.blogId;
             const blogData = req.body;
             const query = { _id: new ObjectId(blogId) };
@@ -185,7 +195,7 @@ async function run() {
                     publishedDate: blogData.image
                 }
             }
-            const result = await blogsCollection.updateOne(query,updateBlog);
+            const result = await blogsCollection.updateOne(query, updateBlog);
             res.send(result);
         });
 
