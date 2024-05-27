@@ -80,6 +80,13 @@ async function run() {
             res.send(result);
         });
 
+        // post :: create testimonials
+        app.post("/api/v1/create-testimonials", async (req, res) => {
+            const testimonials = req.body;
+            const result = await testimonialsCollection.insertOne(testimonials);
+            res.send(result);
+        })
+
         // patch :: update service
         app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
             const serviceData = req.body;
