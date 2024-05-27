@@ -93,6 +93,13 @@ async function run() {
             res.send(result);
         })
 
+        // post :: create blog
+        app.post("/api/v1/create-blog", async (req, res) => {
+            const blog = req.body;
+            const result = await blogsCollection.insertOne(blog);
+            res.send(result);
+        })
+
         // patch :: update service
         app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
             const serviceData = req.body;
