@@ -53,6 +53,12 @@ async function run() {
             res.send(result);
         });
 
+        // get :: show all testimonials
+        app.get("/api/v1/show-all-testimonials", async (req, res) => {
+            const result = await testimonialsCollection.find().toArray();
+            res.send(result);
+        })
+
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
             const service = req.body;
