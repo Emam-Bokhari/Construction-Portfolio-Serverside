@@ -47,6 +47,12 @@ async function run() {
             res.send(result);
         })
 
+        // get :: show all projects
+        app.get("/api/v1/show-all-projects", async (req, res) => {
+            const result = await projectsCollection.find().toArray();
+            res.send(result);
+        })
+
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
             const service = req.body;
