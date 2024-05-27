@@ -179,6 +179,14 @@ async function run() {
             res.send(result);
         })
 
+        // delete :: delete testimonials
+        app.delete("/api/v1/delete-testimonials/:testimonialsId", async (req, res) => {
+            const testimonialsId = req.params.testimonialsId;
+            const query = { _id: new ObjectId(testimonialsId) };
+            const result = await teamMembersCollection.deleteOne(query);
+            res.send(result);
+        })
+
 
         // Send a ping to confirm a successful connection
         client.db("admin").command({ ping: 1 });
