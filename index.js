@@ -45,20 +45,20 @@ async function run() {
         app.get("/api/v1/show-all-team-members", async (req, res) => {
             const result = await teamMembersCollection.find().toArray();
             res.send(result);
-        })
+        });
 
         // get :: show all projects
         app.get("/api/v1/show-all-projects", async (req, res) => {
             const result = await projectsCollection.find().toArray();
             res.send(result);
-        })
+        });
 
         // post :: create service
         app.post("/api/v1/crete-service", async (req, res) => {
             const service = req.body;
             const result = await servicesCollection.insertOne(service)
             res.send(result);
-        })
+        });
 
         // post :: create team member
         app.post("/api/v1/create-team-member", async (req, res) => {
@@ -72,7 +72,7 @@ async function run() {
             const project = req.body;
             const result = await projectsCollection.insertOne(project);
             res.send(result);
-        })
+        });
 
         // patch :: update service
         app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
@@ -90,7 +90,7 @@ async function run() {
             }
             const result = await servicesCollection.updateOne(query, updateService);
             res.send(updateService);
-        })
+        });
 
         // patch :: update team member
         app.patch("/api/v1/update-team-member/:teamMemberId", async (req, res) => {
@@ -109,8 +109,22 @@ async function run() {
                 }
             }
             const result = await teamMembersCollection.updateOne(query, updateTeamMember);
-            res.send(result)
-        })
+            res.send(result);
+        });
+
+        // patch :: update project
+        app.patch("/api/v1/update-project/:projectId", async (req, res) => {
+            const projectId = req.params.projectId;
+            const projectData = req.body;
+            const query = { _id: new ObjectId(projectId) };
+            const updateProject = {
+                $set: {
+                    image: projectData.image
+                }
+            }
+            const result = await projectsCollection.updateOne(query, updateProject);
+            res.send(result);
+        });
 
         // delete :: delete service
         app.delete("/api/v1/delete-service/:serviceId", async (req, res) => {
@@ -118,13 +132,21 @@ async function run() {
             const query = { _id: new ObjectId(serviceId) };
             const result = await servicesCollection.deleteOne(query);
             res.send(result);
-        })
+        });
 
         // delete :: delete team member
         app.delete("/api/v1/delete-team-member/:teamMemberId", async (req, res) => {
             const teamMemberId = req.params.teamMemberId;
             const query = { _id: new ObjectId(teamMemberId) };
             const result = await teamMembersCollection.deleteOne(query);
+            res.send(result);
+        });
+
+        // delete :: delete project
+        app.delete("/api/v1/delete-project/:projectId", async (req, res) => {
+            const projectId = req.params.projectId;
+            const query = { _id: new ObjectId(projectId) };
+            const result = await projectsCollection.deleteOne(query);
             res.send(result);
         })
 
