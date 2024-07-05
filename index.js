@@ -129,15 +129,17 @@ async function run() {
             const query = { _id: new ObjectId(serviceId) };
             const updateService = {
                 $set: {
-                    image: serviceData.image,
+                    iconUrl: serviceData.iconUrl,
+                    serviceNo: serviceData.serviceNo,
+                    imageUrl: serviceData.imageUrl,
                     serviceName: serviceData.serviceName,
-                    serviceDescription: serviceData.serviceDescription,
-                    serviceBenefitsTitle: serviceData.serviceBenefitsTitle,
-                    serviceBenefitsDescription: serviceData.serviceBenefitsDescription
+                    shortDescription: serviceData.shortDescription,
+                    serviceDescription:serviceData.serviceDescription,
+                    serviceBenefitsDescription:serviceData.serviceBenefitsDescription
                 }
             }
             const result = await servicesCollection.updateOne(query, updateService);
-            res.send(updateService);
+            res.send(result);
         });
 
         // patch :: update team member
@@ -147,7 +149,7 @@ async function run() {
             const query = { _id: new ObjectId(teamMemberId) };
             const updateTeamMember = {
                 $set: {
-                    image: teamMemberData.image,
+                    imageUrl: teamMemberData.imageUrl,
                     name: teamMemberData.name,
                     designation: teamMemberData.designation,
                     facebookSocialLink: teamMemberData.facebookSocialLink,
@@ -181,9 +183,10 @@ async function run() {
             const query = { _id: new ObjectId(testimonialsId) };
             const updateTestimonials = {
                 $set: {
-                    image: testimonialsData.image,
+                    imageUrl: testimonialsData.imageUrl,
                     name: testimonialsData.name,
-                    review: testimonialsData.review
+                    review: testimonialsData.review,
+                    star:testimonialsData.star
                 }
             }
             const result = await testimonialsCollection.updateOne(query, updateTestimonials);
