@@ -169,7 +169,7 @@ async function run() {
             const query = { _id: new ObjectId(projectId) };
             const updateProject = {
                 $set: {
-                    image: projectData.image
+                    imageUrl: projectData.imageUrl
                 }
             }
             const result = await projectsCollection.updateOne(query, updateProject);
@@ -200,14 +200,14 @@ async function run() {
             const query = { _id: new ObjectId(blogId) };
             const updateBlog = {
                 $set: {
-                    image: blogData.image,
-                    title: blogData.image,
-                    category: blogData.image,
-                    description: blogData.image,
-                    paraOne: blogData.image,
-                    paraTwo: blogData.image,
-                    author: blogData.image,
-                    publishedDate: blogData.image
+                    imageUrl: blogData.imageUrl,
+                    title: blogData.title,
+                    category: blogData.category,
+                    description: blogData.description,
+                    paraOne:blogData.paraOne,
+                    paraTwo:blogData.paraTwo,
+                    author: blogData.author,
+                    publishedDate: blogData.publishedDate
                 }
             }
             const result = await blogsCollection.updateOne(query, updateBlog);
