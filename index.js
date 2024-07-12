@@ -8,272 +8,318 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-
-// database 
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+// database
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.USERS_DB}:${process.env.PASS_DB}@cluster0.kndeci6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
 });
 
 async function run() {
-    try {
-        // Connect the client to the server	(optional starting in v4.7)
-        client.connect();
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    client.connect();
 
-        //  database collection
-        const database = client.db("construction-portfolio");
-        const servicesCollection = database.collection("services");
-        const teamMembersCollection = database.collection("teamMembers");
-        const projectsCollection = database.collection("projects");
-        const testimonialsCollection = database.collection("testimonials");
-        const blogsCollection = database.collection("blogs");
+    //  database collection
+    const database = client.db("construction-portfolio");
+    const servicesCollection = database.collection("services");
+    const teamMembersCollection = database.collection("teamMembers");
+    const projectsCollection = database.collection("projects");
+    const testimonialsCollection = database.collection("testimonials");
+    const blogsCollection = database.collection("blogs");
 
-        // ====================get====================
+    // ====================get====================
 
-        // get :: show all services
-        app.get("/api/v1/all-services", async (req, res) => {
-            const result = await servicesCollection.find().toArray();
-            res.send(result);
-        });
+    // get :: show all services
+    app.get("/api/v1/all-services", async (req, res) => {
+      const result = await servicesCollection.find().toArray();
+      res.send(result);
+    });
 
-        // get :: service details
-        app.get("/api/v1/service-details/:serviceId", async (req, res) => {
-            const serviceId = req.params.serviceId;
-            const query = { _id: new ObjectId(serviceId) };
-            const result = await servicesCollection.findOne(query);
-            res.send(result);
-        })
+    // get :: service details
+    app.get("/api/v1/service-details/:serviceId", async (req, res) => {
+      const serviceId = req.params.serviceId;
+      const query = { _id: new ObjectId(serviceId) };
+      const result = await servicesCollection.findOne(query);
+      res.send(result);
+    });
 
-        // get :: show all team members
-        app.get("/api/v1/show-all-team-members", async (req, res) => {
-            const result = await teamMembersCollection.find().toArray();
-            res.send(result);
-        });
+    // get :: show all team members
+    app.get("/api/v1/show-all-team-members", async (req, res) => {
+      const result = await teamMembersCollection.find().toArray();
+      res.send(result);
+    });
 
-        // get :: show all projects
-        app.get("/api/v1/show-all-projects", async (req, res) => {
-            const result = await projectsCollection.find().toArray();
-            res.send(result);
-        });
+    // get :: show specefic team members
+    app.get(
+      "/api/v1/show-specefic-team-member/:teamMemberId",
+      async (req, res) => {
+        const teamMemberId = req.params.teamMemberId;
+        const query = { _id: new ObjectId(teamMemberId) };
+        const result = await teamMembersCollection.findOne(query);
+        res.send(result);
+      }
+    );
 
-        // get :: show all testimonials
-        app.get("/api/v1/show-all-testimonials", async (req, res) => {
-            const result = await testimonialsCollection.find().toArray();
-            res.send(result);
-        })
+    // get :: show all projects
+    app.get("/api/v1/show-all-projects", async (req, res) => {
+      const result = await projectsCollection.find().toArray();
+      res.send(result);
+    });
 
-        // get :: show all blogs
-        app.get("/api/v1/show-all-blogs", async (req, res) => {
-            const result = await blogsCollection.find().toArray();
-            res.send(result);
-        })
+    // get :: show specefic project
+    app.get("/api/v1/show-specefic-project/:projectId", async (req, res) => {
+      const projectId = req.params.projectId;
+      const query = { _id: new ObjectId(projectId) };
+      const result = await projectsCollection.findOne(query);
+      res.send(result);
+    });
 
-        // get :: blog details
-        app.get("/api/v1/blog-details/:blogId", async (req, res) => {
-            const blogId = req.params.blogId;
-            const query = { _id: new ObjectId(blogId) };
-            const result = await blogsCollection.findOne(query);
-            res.send(result);
-        })
+    // get :: show all testimonials
+    app.get("/api/v1/show-all-testimonials", async (req, res) => {
+      const result = await testimonialsCollection.find().toArray();
+      res.send(result);
+    });
 
-        // ====================post====================
+    // get :: show specefic testimonail
+    app.get(
+      "/api/v1/show-specefic-testimonial/:testimonialId",
+      async (req, res) => {
+        const testimonialId = req.params.testimonialId;
+        const query = { _id: new ObjectId(testimonialId) };
+        const result = await testimonialsCollection.findOne(query);
+        res.send(result);
+      }
+    );
 
-        // post :: create service
-        app.post("/api/v1/crete-service", async (req, res) => {
-            const service = req.body;
-            const result = await servicesCollection.insertOne(service)
-            res.send(result);
-        });
+    // get :: show all blogs
+    app.get("/api/v1/show-all-blogs", async (req, res) => {
+      const result = await blogsCollection.find().toArray();
+      res.send(result);
+    });
 
-        // post :: create team member
-        app.post("/api/v1/create-team-member", async (req, res) => {
-            const teamMember = req.body;
-            const result = await teamMembersCollection.insertOne(teamMember);
-            res.send(result);
-        });
+    // get :: blog details
+    app.get("/api/v1/blog-details/:blogId", async (req, res) => {
+      const blogId = req.params.blogId;
+      const query = { _id: new ObjectId(blogId) };
+      const result = await blogsCollection.findOne(query);
+      res.send(result);
+    });
 
-        // post :: create project
-        app.post("/api/v1/create-project", async (req, res) => {
-            const project = req.body;
-            const result = await projectsCollection.insertOne(project);
-            res.send(result);
-        });
+    // get :: latest 03 blogs
+    app.get("/api/v1/latest-blogs", async (req, res) => {
+      const result = await blogsCollection.find().limit(3).toArray();
+      res.send(result);
+    });
 
-        // post :: create testimonials
-        app.post("/api/v1/create-testimonials", async (req, res) => {
-            const testimonials = req.body;
-            const result = await testimonialsCollection.insertOne(testimonials);
-            res.send(result);
-        })
+    // ====================post====================
 
-        // post :: create blog
-        app.post("/api/v1/create-blog", async (req, res) => {
-            const blog = req.body;
-            const result = await blogsCollection.insertOne(blog);
-            res.send(result);
-        })
+    // post :: create service
+    app.post("/api/v1/create-service", async (req, res) => {
+      const service = req.body;
+      const result = await servicesCollection.insertOne(service);
+      res.send(result);
+    });
 
-        // ====================Patch====================
+    // post :: create team member
+    app.post("/api/v1/create-team-member", async (req, res) => {
+      const teamMember = req.body;
+      const result = await teamMembersCollection.insertOne(teamMember);
+      res.send(result);
+    });
 
-        // patch :: update service
-        app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
-            const serviceData = req.body;
-            const serviceId = req.params.serviceId;
-            const query = { _id: new ObjectId(serviceId) };
-            const updateService = {
-                $set: {
-                    iconUrl: serviceData.iconUrl,
-                    serviceNo: serviceData.serviceNo,
-                    imageUrl: serviceData.imageUrl,
-                    serviceName: serviceData.serviceName,
-                    shortDescription: serviceData.shortDescription,
-                    serviceDescription:serviceData.serviceDescription,
-                    serviceBenefitsDescription:serviceData.serviceBenefitsDescription
-                }
-            }
-            const result = await servicesCollection.updateOne(query, updateService);
-            res.send(result);
-        });
+    // post :: create project
+    app.post("/api/v1/create-project", async (req, res) => {
+      const project = req.body;
+      const result = await projectsCollection.insertOne(project);
+      res.send(result);
+    });
 
-        // patch :: update team member
-        app.patch("/api/v1/update-team-member/:teamMemberId", async (req, res) => {
-            const teamMemberId = req.params.teamMemberId;
-            const teamMemberData = req.body;
-            const query = { _id: new ObjectId(teamMemberId) };
-            const updateTeamMember = {
-                $set: {
-                    imageUrl: teamMemberData.imageUrl,
-                    name: teamMemberData.name,
-                    designation: teamMemberData.designation,
-                    facebookSocialLink: teamMemberData.facebookSocialLink,
-                    twitterSocialLink: teamMemberData.twitterSocialLink,
-                    instagramSocialLink: teamMemberData.instagramSocialLink,
-                    linkedinSocialLink: teamMemberData.linkedinSocialLink,
-                }
-            }
-            const result = await teamMembersCollection.updateOne(query, updateTeamMember);
-            res.send(result);
-        });
+    // post :: create testimonials
+    app.post("/api/v1/create-testimonials", async (req, res) => {
+      const testimonials = req.body;
+      const result = await testimonialsCollection.insertOne(testimonials);
+      res.send(result);
+    });
 
-        // patch :: update project
-        app.patch("/api/v1/update-project/:projectId", async (req, res) => {
-            const projectId = req.params.projectId;
-            const projectData = req.body;
-            const query = { _id: new ObjectId(projectId) };
-            const updateProject = {
-                $set: {
-                    imageUrl: projectData.imageUrl
-                }
-            }
-            const result = await projectsCollection.updateOne(query, updateProject);
-            res.send(result);
-        });
+    // post :: create blog
+    app.post("/api/v1/create-blog", async (req, res) => {
+      const blog = req.body;
+      const result = await blogsCollection.insertOne(blog);
+      res.send(result);
+    });
 
-        // patch :: update testimonials
-        app.patch("/api/v1/update-testimonials/:testimonialsId", async (req, res) => {
-            const testimonialsId = req.params.testimonialsId;
-            const testimonialsData = req.body;
-            const query = { _id: new ObjectId(testimonialsId) };
-            const updateTestimonials = {
-                $set: {
-                    imageUrl: testimonialsData.imageUrl,
-                    name: testimonialsData.name,
-                    review: testimonialsData.review,
-                    star:testimonialsData.star
-                }
-            }
-            const result = await testimonialsCollection.updateOne(query, updateTestimonials);
-            res.send(result);
-        })
+    // ====================Patch====================
 
-        // patch :: update blog
-        app.patch("/api/v1/update-blog/:blogId", async (req, res) => {
-            const blogId = req.params.blogId;
-            const blogData = req.body;
-            const query = { _id: new ObjectId(blogId) };
-            const updateBlog = {
-                $set: {
-                    imageUrl: blogData.imageUrl,
-                    title: blogData.title,
-                    category: blogData.category,
-                    description: blogData.description,
-                    paraOne:blogData.paraOne,
-                    paraTwo:blogData.paraTwo,
-                    author: blogData.author,
-                    publishedDate: blogData.publishedDate
-                }
-            }
-            const result = await blogsCollection.updateOne(query, updateBlog);
-            res.send(result);
-        });
+    // patch :: update service
+    app.patch("/api/v1/update-service/:serviceId", async (req, res) => {
+      const serviceData = req.body;
+      const serviceId = req.params.serviceId;
+      const query = { _id: new ObjectId(serviceId) };
+      const updateService = {
+        $set: {
+          iconUrl: serviceData.iconUrl,
+          imageUrl: serviceData.imageUrl,
+          serviceNo: serviceData.serviceNo,
+          serviceName: serviceData.serviceName,
+          serviceDescription: serviceData.serviceDescription,
+          serviceBenefits: serviceData.serviceBenefits,
+          serviceBenefitsDescription: serviceData.serviceBenefitsDescription,
+        },
+      };
+      const result = await servicesCollection.updateOne(query, updateService);
+      res.send(result);
+    });
 
-        // ====================Delete====================
+    // patch :: update team member
+    app.patch("/api/v1/update-team-member/:teamMemberId", async (req, res) => {
+      const teamMemberId = req.params.teamMemberId;
+      const teamMemberData = req.body;
+      const query = { _id: new ObjectId(teamMemberId) };
+      const updateTeamMember = {
+        $set: {
+          imageUrl: teamMemberData.imageUrl,
+          name: teamMemberData.name,
+          designation: teamMemberData.designation,
+          facebookSocialLink: teamMemberData.facebookSocialLink,
+          twitterSocialLink: teamMemberData.twitterSocialLink,
+          instagramSocialLink: teamMemberData.instagramSocialLink,
+          linkedinSocialLink: teamMemberData.linkedinSocialLink,
+        },
+      };
+      const result = await teamMembersCollection.updateOne(
+        query,
+        updateTeamMember
+      );
+      res.send(result);
+    });
 
-        // delete :: delete service
-        app.delete("/api/v1/delete-service/:serviceId", async (req, res) => {
-            const serviceId = req.params.serviceId;
-            const query = { _id: new ObjectId(serviceId) };
-            const result = await servicesCollection.deleteOne(query);
-            res.send(result);
-        });
+    // patch :: update project
+    app.patch("/api/v1/update-project/:projectId", async (req, res) => {
+      const projectId = req.params.projectId;
+      const projectData = req.body;
+      const query = { _id: new ObjectId(projectId) };
+      const updateProject = {
+        $set: {
+          imageUrl: projectData.imageUrl,
+        },
+      };
+      const result = await projectsCollection.updateOne(query, updateProject);
+      res.send(result);
+    });
 
-        // delete :: delete team member
-        app.delete("/api/v1/delete-team-member/:teamMemberId", async (req, res) => {
-            const teamMemberId = req.params.teamMemberId;
-            const query = { _id: new ObjectId(teamMemberId) };
-            const result = await teamMembersCollection.deleteOne(query);
-            res.send(result);
-        });
+    // patch :: update testimonials
+    app.patch(
+      "/api/v1/update-testimonials/:testimonialId",
+      async (req, res) => {
+        const testimonialId = req.params.testimonialId;
+        const testimonialsData = req.body;
+        const query = { _id: new ObjectId(testimonialId) };
+        const updateTestimonials = {
+          $set: {
+            imageUrl: testimonialsData.imageUrl,
+            name: testimonialsData.name,
+            review: testimonialsData.review,
+            star: testimonialsData.star,
+          },
+        };
+        const result = await testimonialsCollection.updateOne(
+          query,
+          updateTestimonials
+        );
+        res.send(result);
+      }
+    );
 
-        // delete :: delete project
-        app.delete("/api/v1/delete-project/:projectId", async (req, res) => {
-            const projectId = req.params.projectId;
-            const query = { _id: new ObjectId(projectId) };
-            const result = await projectsCollection.deleteOne(query);
-            res.send(result);
-        })
+    // patch :: update blog
+    app.patch("/api/v1/update-blog/:blogId", async (req, res) => {
+      const blogId = req.params.blogId;
+      const blogData = req.body;
+      const query = { _id: new ObjectId(blogId) };
+      const updateBlog = {
+        $set: {
+          imageUrl: blogData.imageUrl,
+          title: blogData.title,
+          category: blogData.category,
+          description: blogData.description,
+          paraOne: blogData.paraOne,
+          paraTwo: blogData.paraTwo,
+          author: blogData.author,
+          publishedDate: blogData.publishedDate,
+        },
+      };
+      const result = await blogsCollection.updateOne(query, updateBlog);
+      res.send(result);
+    });
 
-        // delete :: delete testimonials
-        app.delete("/api/v1/delete-testimonials/:testimonialsId", async (req, res) => {
-            const testimonialsId = req.params.testimonialsId;
-            const query = { _id: new ObjectId(testimonialsId) };
-            const result = await testimonialsCollection.deleteOne(query);
-            res.send(result);
-        })
+    // ====================Delete====================
 
-        // delete :: delete blog
-        app.delete("/api/v1/delete-blog/:blogId", async (req, res) => {
-            const blogId = req.params.blogId;
-            const query = { _id: new ObjectId(blogId) };
-            const result = await blogsCollection.deleteOne(query);
-            res.send(result);
-        })
+    // delete :: delete service
+    app.delete("/api/v1/delete-service/:serviceId", async (req, res) => {
+      const serviceId = req.params.serviceId;
+      const query = { _id: new ObjectId(serviceId) };
+      const result = await servicesCollection.deleteOne(query);
+      res.send(result);
+    });
 
+    // delete :: delete team member
+    app.delete("/api/v1/delete-team-member/:teamMemberId", async (req, res) => {
+      const teamMemberId = req.params.teamMemberId;
+      const query = { _id: new ObjectId(teamMemberId) };
+      const result = await teamMembersCollection.deleteOne(query);
+      res.send(result);
+    });
 
-        // Send a ping to confirm a successful connection
-        client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
-        // Ensures that the client will close when you finish/error
-        // await client.close();
-    }
+    // delete :: delete project
+    app.delete("/api/v1/delete-project/:projectId", async (req, res) => {
+      const projectId = req.params.projectId;
+      const query = { _id: new ObjectId(projectId) };
+      const result = await projectsCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // delete :: delete testimonials
+    app.delete(
+      "/api/v1/delete-testimonials/:testimonialsId",
+      async (req, res) => {
+        const testimonialsId = req.params.testimonialsId;
+        const query = { _id: new ObjectId(testimonialsId) };
+        const result = await testimonialsCollection.deleteOne(query);
+        res.send(result);
+      }
+    );
+
+    // delete :: delete blog
+    app.delete("/api/v1/delete-blog/:blogId", async (req, res) => {
+      const blogId = req.params.blogId;
+      const query = { _id: new ObjectId(blogId) };
+      const result = await blogsCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // Send a ping to confirm a successful connection
+    client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    // await client.close();
+  }
 }
 run().catch(console.dir);
 
-
-
 // health
 app.get("/health", (req, res) => {
-    res.send("Server is running...");
+  res.send("Server is running...");
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
