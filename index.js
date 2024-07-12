@@ -316,7 +316,7 @@ async function run() {
 run().catch(console.dir);
 
 // health
-app.get("/health", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Server is running...");
 });
 
